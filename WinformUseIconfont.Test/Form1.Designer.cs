@@ -28,25 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.iconfontPanel1 = new WinformUseIconfont.Test.IconfontPanel();
             this.SuspendLayout();
             // 
-            // button1
+            // iconfontPanel1
             // 
-            this.button1.Location = new System.Drawing.Point(173, 96);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.iconfontPanel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.iconfontPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("iconfontPanel1.BackgroundImage")));
+            this.iconfontPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.iconfontPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.iconfontPanel1.Iconfont = "AwesomeFont:61980";
+            this.iconfontPanel1.IconfontForeColer = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.iconfontPanel1.IconSize = 128;
+            this.iconfontPanel1.Location = new System.Drawing.Point(0, 0);
+            this.iconfontPanel1.Name = "iconfontPanel1";
+            this.iconfontPanel1.Size = new System.Drawing.Size(769, 450);
+            this.iconfontPanel1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(769, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.iconfontPanel1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -55,7 +61,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private IconfontPanel iconfontPanel1;
     }
 }
 

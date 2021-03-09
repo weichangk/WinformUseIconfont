@@ -104,12 +104,12 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // UIFontImages
+            // UIIconfontEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(497, 450);
             this.Controls.Add(this.tabControl1);
-            this.Name = "UIFontImages";
+            this.Name = "UIIconfontEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "字体图标";
             this.Load += new System.EventHandler(this.UIIconfontEditor_Load);

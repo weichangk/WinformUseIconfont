@@ -46,17 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IconfontButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="IconfontButton.Designer.cs">
-      <DependentUpon>IconfontButton.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IconfontPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IconfontPanel.Designer.cs">
+      <DependentUpon>IconfontPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

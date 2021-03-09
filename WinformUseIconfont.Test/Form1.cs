@@ -27,6 +27,7 @@ namespace WinformUseIconfont.Test
         {
             //Iconfont AwesomeFont;
             //AwesomeFont = new Iconfont(ReadFontFileFromResource("WinformUseIconfont.ttf.FontAwesome.ttf"));
+            //this.BackgroundImage = IconfontHelper.GetBitmap(UIIconfontEditor.iconfontEnum, 61543, 128, Color.Transparent, Color.Gray, Color.Black, false);
         }
 
 
@@ -41,6 +42,11 @@ namespace WinformUseIconfont.Test
                 fontStream.Close();
             }
             return buffer;
+        }
+
+        private void iconfontPanel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -8,11 +8,15 @@ using System.Windows.Forms;
 
 namespace WinformUseIconfont
 {
+    //修改该类时要重启编译器后图标集合才重新加载！！！
+
     /// <summary>
     /// 矢量图标编辑窗体
     /// </summary>
     public partial class UIIconfontEditor : Form
     {
+        public static IconfontEnum iconfontEnum = IconfontEnum.AwesomeFont;
+
         private readonly ConcurrentQueue<Label> AwesomeLabels = new ConcurrentQueue<Label>();
         private readonly ConcurrentQueue<Label> ElegantLabels = new ConcurrentQueue<Label>();
 
@@ -39,8 +43,7 @@ namespace WinformUseIconfont
                 if (AwesomeLabels.TryDequeue(out Label lbl))
                 {
                     lpAwesome.Controls.Add(lbl);
-                    int symbol = (int)lbl.Tag;
-                    toolTip.SetToolTip(lbl, symbol.ToString());
+                    toolTip.SetToolTip(lbl, lbl.Tag.ToString());
                 }
             }
 
@@ -49,8 +52,7 @@ namespace WinformUseIconfont
                 if (ElegantLabels.TryDequeue(out Label lbl))
                 {
                     lpElegant.Controls.Add(lbl);
-                    int symbol = (int)lbl.Tag;
-                    toolTip.SetToolTip(lbl, symbol.ToString());
+                    toolTip.SetToolTip(lbl, lbl.Tag.ToString());
                 }
             }
 
@@ -64,7 +66,7 @@ namespace WinformUseIconfont
             foreach (var fieldInfo in fis)
             {
                 int value = int.TryParse(fieldInfo.GetRawConstantValue().ToString(), out var result) ? result : default(int);
-                AwesomeLabels.Enqueue(CreateLabel(value));
+                AwesomeLabels.Enqueue(CreateLabel(value, IconfontEnum.AwesomeFont));
             }
         }
 
@@ -75,67 +77,58 @@ namespace WinformUseIconfont
             foreach (var fieldInfo in fis)
             {
                 int value = int.TryParse(fieldInfo.GetRawConstantValue().ToString(), out var result) ? result : default(int);
-                ElegantLabels.Enqueue(CreateLabel(value));
+                ElegantLabels.Enqueue(CreateLabel(value, IconfontEnum.ElegantFont));
             }
         }
 
-        private Label CreateLabel(int icon)
+        private Label CreateLabel(int icon, IconfontEnum iconfontEnum)
         {
             Label lbl = new Label();
             lbl.AutoSize = false;
             lbl.Size = new Size(32, 32);
-            lbl.ForeColor = Color.FromArgb(80, 160, 255);
-
-            IconfontHelper.AwesomeFont.ForeColor = Color.FromArgb(48, 48, 48);
-            IconfontHelper.ElegantFont.ForeColor = Color.FromArgb(48, 48, 48);
-
-            lbl.Image = icon >= 0xF000 ?
-                        IconfontHelper.AwesomeFont.GetImage(icon, 28) :
-                        IconfontHelper.ElegantFont.GetImage(icon, 28);
+            switch (iconfontEnum)
+            {
+                case IconfontEnum.AwesomeFont:
+                    lbl.Image = IconfontHelper.GetImage(icon, iconfontEnum);
+                    break;
+                case IconfontEnum.ElegantFont:
+                    lbl.Image = IconfontHelper.GetImage(icon, iconfontEnum);
+                    break;
+                default:
+                    break;
+            }
             lbl.ImageAlign = ContentAlignment.MiddleCenter;
             lbl.TextAlign = ContentAlignment.MiddleLeft;
             lbl.Margin = new Padding(2);
             lbl.Click += lbl_DoubleClick;
             lbl.MouseEnter += Lbl_MouseEnter;
             lbl.MouseLeave += Lbl_MouseLeave;
-            lbl.Tag = icon;
+            lbl.Tag = $"{iconfontEnum}:{icon}";
             return lbl;
-        }
-
-        private void Lbl_MouseLeave(object sender, EventArgs e)
-        {
-            Label lbl = (Label)sender;
-            IconfontHelper.AwesomeFont.ForeColor = Color.FromArgb(48, 48, 48);
-            IconfontHelper.ElegantFont.ForeColor = Color.FromArgb(48, 48, 48);
-            int icon = (int)lbl.Tag;
-            lbl.Image = icon >= 0xF000 ?
-                        IconfontHelper.AwesomeFont.GetImage(icon, 28) :
-                        IconfontHelper.ElegantFont.GetImage(icon, 28);
-        }
-
-        private void Lbl_MouseEnter(object sender, EventArgs e)
-        {
-            Label lbl = (Label)sender;
-            IconfontHelper.AwesomeFont.ForeColor = Color.FromArgb(80, 160, 255);
-            IconfontHelper.ElegantFont.ForeColor = Color.FromArgb(80, 160, 255);
-            int icon = (int)lbl.Tag;
-            lbl.Image = icon >= 0xF000 ?
-                        IconfontHelper.AwesomeFont.GetImage(icon, 28) :
-                        IconfontHelper.ElegantFont.GetImage(icon, 28);
         }
 
         /// <summary>
         /// 选中图标
         /// </summary>
-        public int SelectSymbol { get; private set; }
+        public string SelectIconText { get; private set; }
 
         private void lbl_DoubleClick(object sender, EventArgs e)
         {
-            if (sender is Label lbl) SelectSymbol = (int)lbl.Tag;
+            if (sender is Label lbl) SelectIconText = lbl.Tag.ToString();
             DialogResult = DialogResult.OK;
             Close();
         }
+        private void Lbl_MouseLeave(object sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            lbl.ForeColor = Color.FromArgb(48, 48, 48);
+        }
 
+        private void Lbl_MouseEnter(object sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            lbl.ForeColor = Color.FromArgb(80, 160, 255);
+        }
         private void bg_DoWork(object sender, DoWorkEventArgs e)
         {
             AddAwesomeImageEx();
@@ -177,7 +170,7 @@ namespace WinformUseIconfont
             //打开属性编辑器修改数据
             UIIconfontEditor frm = new UIIconfontEditor();
             if (frm.ShowDialog() == DialogResult.OK)
-                value = frm.SelectSymbol;
+                value = frm.SelectIconText;
             frm.Dispose();
             return value;
         }
